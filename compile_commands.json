@@ -1,0 +1,82 @@
+[
+ {
+  "directory": "C:\\Users\\james\\OneDrive - Southern Illinois University Edwardsville\\Laing, Max's files - Senior Design\\Custom DCU Firmware\\EV-Driver-Controls",
+  "arguments": [
+   "c:/mspgcc/bin/msp430-gcc",
+   "-mmcu=msp430x247",
+   "-O2",
+   "-Wall",
+   "-Wunused",
+   "-I./include/",
+   "-c",
+   "-o",
+   "src/usci.o",
+   "src/usci.c"
+  ],
+  "file": "src/usci.c"
+ },
+ {
+  "directory": "C:\\Users\\james\\OneDrive - Southern Illinois University Edwardsville\\Laing, Max's files - Senior Design\\Custom DCU Firmware\\EV-Driver-Controls",
+  "arguments": [
+   "c:/mspgcc/bin/msp430-gcc",
+   "-mmcu=msp430x247",
+   "-O2",
+   "-Wall",
+   "-Wunused",
+   "-I./include/",
+   "-c",
+   "-o",
+   "src/can.o",
+   "src/can.c"
+  ],
+  "file": "src/can.c"
+ },
+ {
+  "directory": "C:\\Users\\james\\OneDrive - Southern Illinois University Edwardsville\\Laing, Max's files - Senior Design\\Custom DCU Firmware\\EV-Driver-Controls",
+  "arguments": [
+   "c:/mspgcc/bin/msp430-gcc",
+   "-mmcu=msp430x247",
+   "-O2",
+   "-Wall",
+   "-Wunused",
+   "-I./include/",
+   "-c",
+   "-o",
+   "src/gauge.o",
+   "src/gauge.c"
+  ],
+  "file": "src/gauge.c"
+ },
+ {
+  "directory": "C:\\Users\\james\\OneDrive - Southern Illinois University Edwardsville\\Laing, Max's files - Senior Design\\Custom DCU Firmware\\EV-Driver-Controls",
+  "arguments": [
+   "c:/mspgcc/bin/msp430-gcc",
+   "-mmcu=msp430x247",
+   "-O2",
+   "-Wall",
+   "-Wunused",
+   "-I./include/",
+   "-c",
+   "-o",
+   "src/pedal.o",
+   "src/pedal.c"
+  ],
+  "file": "src/pedal.c"
+ },
+ {
+  "directory": "C:\\Users\\james\\OneDrive - Southern Illinois University Edwardsville\\Laing, Max's files - Senior Design\\Custom DCU Firmware\\EV-Driver-Controls",
+  "arguments": [
+   "c:/mspgcc/bin/msp430-gcc",
+   "-mmcu=msp430x247",
+   "-O2",
+   "-Wall",
+   "-Wunused",
+   "-I./include/",
+   "-c",
+   "-o",
+   "src/tri86.o",
+   "src/tri86.c"
+  ],
+  "file": "src/tri86.c"
+ }
+]

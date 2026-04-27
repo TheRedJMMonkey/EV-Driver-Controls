@@ -38,6 +38,4 @@ all: $(PROJECT_NAME).deps $(PROJECT_NAME).a43 $(PROJECT_NAME).lst $(PROJECT_NAME
 
 # CLEAN: Removes all output and intermediate files 
 clean:
-	rm -f $(OUTPUT_PATH)*.a43 $(OUTPUT_PATH)*.lst $(OUTPUT_PATH)*.elf $(OUTPUT_PATH)*.map $(OUTPUT_PATH)*.deps $(OBJECTS)
-
-
+	powershell -Command "Remove-Item -ErrorAction SilentlyContinue '$(OUTPUT_PATH)*.a43','$(OUTPUT_PATH)*.lst','$(OUTPUT_PATH)*.elf','$(OUTPUT_PATH)*.map','$(OUTPUT_PATH)*.deps'; foreach ($$f in '$(OBJECTS)'.Split(' ') | Where-Object { $$_ -ne '' }){ Remove-Item -ErrorAction SilentlyContinue $$f }"\

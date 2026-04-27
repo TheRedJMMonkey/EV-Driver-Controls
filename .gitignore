@@ -1,8 +1,9 @@
 build/
 output/
-.deps
-.a43
-.elf
-.lst
-.map
-.tsf
+*.deps
+*.a43
+*.elf
+*.lst
+*.map
+*.tsf
+*.o

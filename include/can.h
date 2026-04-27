@@ -45,7 +45,7 @@ extern can_variables	*can_push_ptr;
 // Receive buffer 0, can choose two different receive blocks, with a single mask
 #define RX_MASK_0		0x07E0			// Only care about upper 6 bits of 11-bit address
 #define RX_ID_0A		DC_CAN_BASE		// Receive driver controls (ourself) packets, for RTR and bootloader trigger
-#define RX_ID_0B		0x0000			// Unused
+#define RX_ID_0B		DC_ENABLE		// Receive enable/disable command (0x00A)
 // Receive buffer 1, can choose four different receive blocks, with a single mask
 #define RX_MASK_1		0x07E0			// Only care about upper 6 bits of 11-bit address
 #define RX_ID_1A		MC_CAN_BASE		// Receive packets from motor controller
@@ -100,6 +100,10 @@ void 					can_mod( unsigned char address, unsigned char mask, unsigned char data
 #define DC_RESET		3
 #define DC_SWITCH		5
 #define DC_BOOTLOAD		22
+
+// DC_ENABLE magic value (only valid enable command, defaults to disabled)
+#define DC_ENABLE			0x00A
+#define DC_ENABLE_MAGIC		0xA5
 
 // Driver controls switch position packet bitfield positions (lower 16 bits)
 #define SW_MODE_R		0x0001

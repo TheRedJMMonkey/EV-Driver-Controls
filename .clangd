@@ -1,0 +1,17 @@
+CompileFlags:
+  Remove:
+    - "-mmcu=msp430x247"
+
+  Add:
+    - -target
+    - msp430
+    - -Iinclude
+    - -Ic:/mspgcc/msp430/include
+    - -D__MSP430__
+    - -D__MSP430F247__
+    - -std=gnu11
+
+Diagnostics:
+  Suppress:
+    - unknown-warning-option
+    - unsupported

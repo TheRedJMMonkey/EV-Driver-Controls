@@ -49,6 +49,9 @@ float controller_temp = 0;
 float battery_voltage = 0;
 float battery_current = 0;
 
+// DCU enable/disable state (1 = enabled, 0 = disabled). Default disabled for safety
+unsigned char dcu_enabled = 0;
+
 // Main routine
 int main( void )
 { 
@@ -260,7 +263,7 @@ int main( void )
 			command.state = next_state;
 			
 			// Control brake lights
-			if((switches & SW_BRAKE) || (events & EVENT_REGEN)) P1OUT |= BRAKE_OUT;
+			if((switches & SW_BRAKE) || ((events & EVENT_REGEN) && dcu_enabled)) P1OUT |= BRAKE_OUT;
 			else P1OUT &= ~BRAKE_OUT;
 			
 			// Control reversing lights
@@ -330,6 +333,12 @@ int main( void )
 			else{
 				command.current = 0.0;
 				command.rpm = 0.0;
+			}
+
+			// Enforce 0% current limit and disable regen when DCU is disabled
+			if(!dcu_enabled){
+				command.current = 0.0;
+				events &= ~EVENT_REGEN;
 			}
 
 			// Transmit commands and telemetry
@@ -489,7 +498,28 @@ int main( void )
 						{
 							WDTCTL = 0x00;	// Force watchdog reset
 						}
-						break;				
+						break;
+					case DC_ENABLE:
+						// Enable/disable DCU control (only exact magic enables, any other value disables)
+					if(can.data.data_u8[0] == DC_ENABLE_MAGIC){
+						dcu_enabled = 1;
+					}
+					else{
+						dcu_enabled = 0;
+						// Queue immediate 0-current messages when disabling (max 100ms window safety)
+						can_push_ptr->address = DC_CAN_BASE + DC_DRIVE;
+						can_push_ptr->status = 8;
+						can_push_ptr->data.data_fp[1] = 0.0;
+						can_push_ptr->data.data_fp[0] = command.rpm;
+						can_push();
+						can_push_ptr->address = DC_CAN_BASE + DC_POWER;
+						can_push_ptr->status = 8;
+						can_push_ptr->data.data_fp[1] = 0.0;
+						can_push_ptr->data.data_fp[0] = 0.0;
+						can_push();
+						events &= ~EVENT_REGEN;
+					}
+						break;
 					case EG_CAN_BASE + EG_STATUS:
 						if ( can.data.data_u8[0] == EG_STATE_NEUTRAL ) current_egear = EG_STATE_NEUTRAL;
 						else if ( can.data.data_u8[0] == EG_STATE_LOW ) current_egear = EG_STATE_LOW;
@@ -513,14 +543,14 @@ int main( void )
 					case DC_CAN_BASE + DC_DRIVE:
 						can_push_ptr->address = can.address;
 						can_push_ptr->status = 8;
-						can_push_ptr->data.data_fp[1] = command.current;
+						can_push_ptr->data.data_fp[1] = dcu_enabled ? command.current : 0.0;
 						can_push_ptr->data.data_fp[0] = command.rpm;
 						can_push();
 						break;
 					case DC_CAN_BASE + DC_POWER:
 						can_push_ptr->address = can.address;
 						can_push_ptr->status = 8;
-						can_push_ptr->data.data_fp[1] = command.bus_current;
+						can_push_ptr->data.data_fp[1] = dcu_enabled ? command.bus_current : 0.0;
 						can_push_ptr->data.data_fp[0] = 0.0;
 						can_push();
 						break;
